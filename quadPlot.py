@@ -7,19 +7,30 @@ import sys
 
 # TODO add functionality for plotting state and desired_state
 
-def plot_quad_3d(callback):
+def plot_quad_3d(get_world_frame):
+    """
+    get_world_frame is a function which return the "next" world frame to be
+    drawn
+    """
     fig = plt.figure()
     ax = fig.add_axes([0, 0, 1, 1], projection='3d')
     ax.plot([], [], [], '-', c='cyan')[0]
     ax.plot([], [], [], '-', c='red')[0]
     ax.plot([], [], [], '-', c='blue', marker='o', markevery=2)[0]
     set_limit((-0.5,0.5), (-0.5,0.5), (-0.5,5))
-    an = animation.FuncAnimation(fig, callback, init_func=None,
+    an = animation.FuncAnimation(fig,
+                                 anim_callback,
+                                 fargs=(get_world_frame,),
+                                 init_func=None,
                                  frames=400, interval=10, blit=False)
     if len(sys.argv) > 1 and sys.argv[1] == 'save':
         an.save('sim.gif', dpi=80, writer='imagemagick', fps=60)
     else:
         plt.show()
+
+def anim_callback(i, get_world_frame):
+    frame = get_world_frame(i)
+    set_frame(frame)
 
 def set_limit(x, y, z):
     ax = plt.gca()
