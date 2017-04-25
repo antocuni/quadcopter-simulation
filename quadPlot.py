@@ -26,7 +26,7 @@ def plot_quad_3d(get_world_frame):
     if len(sys.argv) > 1 and sys.argv[1] == 'save':
         an.save('sim.gif', dpi=80, writer='imagemagick', fps=60)
     else:
-        plt.show()
+        plt.show(block=False)
 
 def anim_callback(i, get_world_frame):
     frame = get_world_frame(i)
