@@ -1,6 +1,8 @@
 import numpy as np
 from collections import namedtuple
 
+DesiredState = namedtuple('DesiredState', 'pos vel acc yaw yawdot')
+
 # This generate a straight line along z axis for hover control
 def genLine(t):
     v_max = 2.0;
@@ -34,6 +36,5 @@ def genLine(t):
         pos = np.array([0, 0, 2 * v_max**2 / a_max])
     
     pos += initial_pos
-    DesiredState = namedtuple('DesiredState', 'pos vel acc yaw yawdot')
     return DesiredState(pos, vel, acc, yaw, yawdot)
 
