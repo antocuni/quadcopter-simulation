@@ -7,15 +7,15 @@ import sys
 
 # TODO add functionality for plotting state and desired_state
 
-def plot_quad_3d(args=()):
+def plot_quad_3d(callback):
     fig = plt.figure()
     ax = fig.add_axes([0, 0, 1, 1], projection='3d')
     ax.plot([], [], [], '-', c='cyan')[0]
     ax.plot([], [], [], '-', c='red')[0]
     ax.plot([], [], [], '-', c='blue', marker='o', markevery=2)[0]
     set_limit((-0.5,0.5), (-0.5,0.5), (-0.5,5))
-    an = animation.FuncAnimation(fig, _callback, fargs = args, init_func=None,
-            frames=400, interval=10, blit=False)
+    an = animation.FuncAnimation(fig, callback, init_func=None,
+                                 frames=400, interval=10, blit=False)
     if len(sys.argv) > 1 and sys.argv[1] == 'save':
         an.save('sim.gif', dpi=80, writer='imagemagick', fps=60)
     else:
@@ -36,12 +36,3 @@ def set_frame(frame):
         x, y, z = line_data
         line.set_data(x, y)
         line.set_3d_properties(z)
-
-def _callback(i, sched, id):
-    # forward the event from GUI thread to scheduler threadA
-    # do the actual rendering in _render method
-    # start scheduler after we get the first frame so that we can see the initial state
-    sched.start()
-    sched.postEvent(id)
-
-
