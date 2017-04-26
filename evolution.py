@@ -50,6 +50,22 @@ class Creature(object):
         distance = np.linalg.norm(target - quad.position())
         return distance
 
+    def evolve(self):
+        """
+        What do we want?
+        We probably want two steps of evolution:
+
+          1. the first does the "fine tuning": so we adjust many/most/all the values
+             by a small amount (+/- 1%?)
+
+         2. the second does rare mutations: it might adjust 1 or 2 values by a larger amount
+            (+/- 20%?), but it occurs rarely
+        """
+        # mu = 0
+        # sigma = 0.2
+        # k = np.random.normal(mu, sigma, len(self.matrix))
+        # matrix + (matrix*k)
+
 
 def main():
     import time
