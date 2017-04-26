@@ -95,10 +95,23 @@ class Quadcopter:
         return state_dot    
 
     def update(self, dt, F, M):
+        """
+        Run a simulation step, using F and M as inputs.
+        """
         # limit thrust and Moment
         L = params.arm_length
         r = params.r
         prop_thrusts = params.invA.dot(np.r_[np.array([[F]]), M])
+        self.update_propellers(dt, prop_thrusts)
+
+    def update_propellers(self, dt, prop_thrusts):
+        """
+        Run a simulation step, taking the desired thrust of the propellers as
+        input
+        """
+        # limit thrust and Moment
+        L = params.arm_length
+        r = params.r
         prop_thrusts_clamped = np.maximum(np.minimum(prop_thrusts, params.maxF/4), params.minF/4)
         F = np.sum(prop_thrusts_clamped)
         M = params.A[1:].dot(prop_thrusts_clamped)
