@@ -39,7 +39,7 @@ class QuadPlotter(object):
         if len(sys.argv) > 1 and sys.argv[1] == 'save':
             an.save('sim.gif', dpi=80, writer='imagemagick', fps=60)
         else:
-            plt.show(block=False)
+            plt.show()
 
     def plot_step(self, world_frame):
         self.set_frame(world_frame)
