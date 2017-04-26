@@ -1,5 +1,6 @@
 import numpy as np
 from model.quadcopter import Quadcopter
+from quadPlot import QuadPlotter
 
 DT = 1/200.0 # 200 Hz
 
@@ -18,11 +19,16 @@ class Creature(object):
         self.constant = np.random.random(M)
         self.fitness = 0
 
-    def run(self):
+    def run(self, show=False):
+        plotter = None
+        if show:
+            plotter = QuadPlotter()
+        #
         quad = Quadcopter(pos=(0, 0, 0), attitude=(0, 0, 0))
         state = np.zeros(self.VARS)
         self.fitness = 0
         t = 0
+        #
         while t < 2:
             x, y, z = quad.position()
             inputs = np.concatenate([quad.attitude(), [z], state])
@@ -33,6 +39,8 @@ class Creature(object):
             quad.update_propellers(DT, motors)
             t += DT
             self.fitness += self.compute_fitness(quad)
+            if show:
+                plotter.plot_step(quad.world_frame())
 
     def compute_fitness(self, quad):
         target = [0, 0, 1]
@@ -43,11 +51,12 @@ class Creature(object):
 def main():
     import time
     c = Creature(0, 1, None)
-    for i in range(5):
-        start = time.time()
-        c.run()
-        end = time.time()
-        print '%.2f' % (end-start)
+    c.run(show=True)
+    ## for i in range(5):
+    ##     start = time.time()
+    ##     c.run()
+    ##     end = time.time()
+    ##     print '%.2f' % (end-start)
 
 if __name__ == '__main__':
     main()

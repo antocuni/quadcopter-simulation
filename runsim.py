@@ -5,7 +5,7 @@ license: BSD
 Please feel free to use and modify this, but keep the above information. Thanks!
 """
 
-from quadPlot import plot_quad_3d
+from quadPlot import QuadPlotter
 import controller
 import trajGen
 from model.quadcopter import Quadcopter
@@ -40,7 +40,6 @@ def control_propellers(quad):
         [0],
         ]
     quad.update_propellers(dt, prop_thrusts)
-    import pdb;pdb.set_trace()
 
 
 def main():
@@ -54,7 +53,8 @@ def main():
             control_propellers(quadcopter)
         return quadcopter.world_frame()
 
-    plot_quad_3d(get_world_frame=control_loop)
+    plotter = QuadPlotter()
+    plotter.plot_animation(control_loop)
 
 if __name__ == "__main__":
     main()
