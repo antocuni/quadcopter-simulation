@@ -43,6 +43,10 @@ class Creature(object):
                 plotter.plot_step(quad.world_frame())
 
     def compute_fitness(self, quad):
+        # for now, the goal is to reach the target position as fast as
+        # possible and then to stay there. So a measure of the fitness is the
+        # distance to the target at every step (the goal is to *minimize* the
+        # total value, of course)
         target = [0, 0, 1]
         distance = np.linalg.norm(target - quad.position())
         return distance
