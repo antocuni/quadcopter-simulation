@@ -15,8 +15,8 @@ class Creature(object):
         self.id = id
         self.generation = generation
         self.parent = parent
-        self.matrix = np.random.random(N*M).reshape(M, N)
-        self.constant = np.random.random(M)
+        self.matrix = np.random.random(N*M).reshape(M, N) - 0.5
+        self.constant = np.random.random(M) - 0.5
         self.fitness = 0
 
     def run(self, show=False):
@@ -35,7 +35,6 @@ class Creature(object):
             outputs = np.dot(self.matrix, inputs) + self.constant
             motors = outputs[:4]
             state = outputs[4:]
-            motors = [0, 0, 0, 0]
             quad.update_propellers(DT, motors)
             t += DT
             self.fitness += self.compute_fitness(quad)
@@ -64,4 +63,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-            
