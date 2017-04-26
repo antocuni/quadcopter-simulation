@@ -11,7 +11,7 @@ import trajGen
 from model.quadcopter import Quadcopter
 import numpy as np
 
-PLAYBACK_SPEED = 4
+PLAYBACK_SPEED = 1
 control_frequency = 200 # Hz for attitude control loop
 dt = 1.0 / control_frequency
 time = [0.0]
@@ -26,19 +26,22 @@ def attitudeControl(quad, time):
     quad.update(dt, F, M)
     time[0] += dt
 
-def control_propellers(quad, time):
+def control_propellers(quad):
     """
     hacked logic by antocuni: control the quadcopter by controlling each
     propeller directly
     """
     F = 0.443
+    diff = F - (F*1.0001)
     prop_thrusts = [
-        [F],
-        [F],
-        [F],
-        [F],
+        [F*2],
+        [0],
+        [F*2],
+        [0],
         ]
     quad.update_propellers(dt, prop_thrusts)
+    import pdb;pdb.set_trace()
+
 
 def main():
     pos = (0,0,0)
@@ -48,7 +51,7 @@ def main():
     def control_loop(i):
         for _ in range(PLAYBACK_SPEED):
             #attitudeControl(quadcopter, time)
-            control_propellers(quadcopter, time)
+            control_propellers(quadcopter)
         return quadcopter.world_frame()
 
     plot_quad_3d(get_world_frame=control_loop)
